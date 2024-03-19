@@ -48,13 +48,7 @@ resource "aws_api_gateway_authorizer" "cognito_authorizer" {
   identity_source = "method.request.header.Authorization"
   provider_arns   = ["arn:aws:cognito-idp:us-east-2:644237782704:userpool/us-east-2_3HJlRalTj"]
 }
-
-resource "aws_api_gateway_deployment" "point-api-gateway-deployment" {
-  depends_on  = [aws_api_gateway_integration.lambda_integration, aws_api_gateway_integration.get_customer_integration]
-  rest_api_id = aws_api_gateway_rest_api.point_api_gateway.id
-  stage_name  = "dev"
-}
-
+ 
 resource "aws_lambda_permission" "point_lambda_authorizer_permission" {
   statement_id  = "AllowAPIInvoke"
   action        = "lambda:InvokeFunction"
