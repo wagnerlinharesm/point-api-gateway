@@ -113,8 +113,6 @@ resource "aws_api_gateway_method" "report_generate_post_method" {
   request_models        = {
     "application/json" = "Empty"
   }
-
-  request_validator_id  = aws_api_gateway_request_validator.validator.id
 }
 
 resource "aws_api_gateway_method_response" "report_generate_post_method_response" {
