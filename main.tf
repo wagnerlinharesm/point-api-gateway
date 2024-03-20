@@ -109,10 +109,6 @@ resource "aws_api_gateway_method" "report_generate_post_method" {
   http_method           = "POST"
   authorization         = "COGNITO_USER_POOLS"
   authorizer_id         = aws_api_gateway_authorizer.cognito_authorizer.id
-
-  request_models        = {
-    "application/json" = "Empty"
-  }
 }
 
 resource "aws_api_gateway_method_response" "report_generate_post_method_response" {
