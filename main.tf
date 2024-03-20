@@ -118,10 +118,11 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   resource_id               = aws_api_gateway_resource.report_generate_resource.id
   http_method               = aws_api_gateway_method.report_generate_post_method.http_method
 
-  integration_http_method   = "POST"
   type                      = "AWS"
+  integration_http_method   = "POST"
+  passthrough_behavior      = "NEVER"
 
-  uri                       = data.aws_sqs_queue.point_report_sqs_queue.arn
+  uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
 
   request_templates = {
     "application/json" = <<EOF
@@ -131,7 +132,6 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
     EOF
   }
 
-  passthrough_behavior = "NEVER"
 }
 
 resource "aws_api_gateway_integration_response" "report_generate_integration_response" {
