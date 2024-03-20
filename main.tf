@@ -130,6 +130,10 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   credentials               = aws_iam_role.report_generate_integration_iam_role.arn
   uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
 
+  request_parameters = {
+    "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
+  }
+
   request_templates = {
     "application/json" = "Action=SendMessage&MessageBody=$input.params().header.get('Authorization')"
   }
