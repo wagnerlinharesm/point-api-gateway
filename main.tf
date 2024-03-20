@@ -128,7 +128,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   passthrough_behavior      = "NEVER"
 
   credentials               = aws_iam_role.report_generate_integration_iam_role.arn
-  uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
+  uri                       = data.aws_sqs_queue.point_report_sqs_queue.url
 
   request_templates = {
     "application/json" = "Action=SendMessage&MessageBody=$input.params().header.get('Authorization')"
