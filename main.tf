@@ -80,6 +80,16 @@ data "aws_sqs_queue" "point_report_sqs_queue" {
   name = var.point_report_sqs_queue_name
 }
 
+resource "aws_iam_role" "report_generate_integration_iam_role" {
+  name               = "report_generate_integration_iam_role"
+  assume_role_policy = file("iam/policy/assume_role_policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "point_report_sqs_iam_role_policy_attachment" {
+  role       = aws_iam_role.report_generate_integration_iam_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSQSFullAccess"
+}
+
 resource "aws_api_gateway_resource" "report_resource" {
   rest_api_id = aws_api_gateway_rest_api.point_api_gateway.id
   parent_id   = aws_api_gateway_rest_api.point_api_gateway.root_resource_id
@@ -122,6 +132,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   integration_http_method   = "POST"
   passthrough_behavior      = "NEVER"
 
+  credentials               = aws_iam_role.report_generate_integration_iam_role.arn
   uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
 
   request_templates = {
