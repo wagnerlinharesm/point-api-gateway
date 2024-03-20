@@ -77,8 +77,6 @@ resource "aws_api_gateway_integration" "lambda_integration" {
 # -- report route
 # -- ------------------------------------------------------
 
-data "aws_caller_identity" "current" {}
-
 data "aws_sqs_queue" "point_report_sqs_queue" {
   name = var.point_report_sqs_queue_name
 }
@@ -130,7 +128,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   passthrough_behavior      = "NEVER"
 
   credentials               = aws_iam_role.report_generate_integration_iam_role.arn
-  uri                       = "https://sqs.${var.region}.amazonaws.com/${data.aws_caller_identity.current.account_id}/${data.aws_sqs_queue.point_report_sqs_queue.name}"
+  uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
 
   request_templates = {
     "application/json" = "Action=SendMessage&MessageBody=$input.params().header.get('Authorization')"
@@ -147,5 +145,3 @@ resource "aws_api_gateway_integration_response" "report_generate_integration_res
     aws_api_gateway_integration.report_generate_integration
   ]
 }
-
-
