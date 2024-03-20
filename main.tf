@@ -32,6 +32,7 @@ resource "aws_api_gateway_authorizer" "cognito_authorizer" {
 resource "aws_api_gateway_deployment" "point-api-gateway-deployment" {
   depends_on = [
     aws_api_gateway_integration.lambda_integration,
+    aws_api_gateway_integration.report_generate_integration
     ]
   rest_api_id = aws_api_gateway_rest_api.point_api_gateway.id
   stage_name  = "dev"
@@ -150,4 +151,8 @@ resource "aws_api_gateway_integration_response" "report_generate_integration_res
   resource_id = aws_api_gateway_resource.report_generate_resource.id
   http_method = aws_api_gateway_method.report_generate_post_method.http_method
   status_code = aws_api_gateway_method_response.report_generate_post_method_response.status_code
+
+  depends_on = [
+    aws_api_gateway_integration.report_generate_integration
+  ]
 }
