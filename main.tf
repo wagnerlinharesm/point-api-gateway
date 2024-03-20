@@ -180,3 +180,12 @@ resource "aws_api_gateway_integration" "point_query_lambda_integration" {
   type                    = "AWS_PROXY"
   uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:644237782704:function:point_query/invocations"
 }
+
+resource "aws_lambda_permission" "point_query_permission" {
+  statement_id  = "AllowAPIInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.point_query.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.point_api_gateway.execution_arn}/*"
+}
