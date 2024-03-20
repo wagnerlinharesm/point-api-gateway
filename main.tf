@@ -131,13 +131,8 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   uri                       = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_sqs_queue.point_report_sqs_queue.name}"
 
   request_templates = {
-    "application/json" = <<EOF
-    {
-      "Authorization": "$util.escapeJavaScript($input.params().header.get('Authorization'))",
-    }
-    EOF
+    "application/json" = "Action=SendMessage&MessageBody=$input.params().header.get('Authorization')"
   }
-
 }
 
 resource "aws_api_gateway_integration_response" "report_generate_integration_response" {
