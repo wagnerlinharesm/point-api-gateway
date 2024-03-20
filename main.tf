@@ -166,7 +166,7 @@ resource "aws_api_gateway_resource" "query_resource" {
 
 resource "aws_api_gateway_method" "query_method" {
   rest_api_id   = aws_api_gateway_rest_api.point_api_gateway.id
-  resource_id   = aws_api_gateway_resource.auth_resource.id
+  resource_id   = aws_api_gateway_resource.query_resource.id
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.cognito_authorizer.id
@@ -174,8 +174,8 @@ resource "aws_api_gateway_method" "query_method" {
 
 resource "aws_api_gateway_integration" "point_query_lambda_integration" {
   rest_api_id             = aws_api_gateway_rest_api.point_api_gateway.id
-  resource_id             = aws_api_gateway_resource.auth_resource.id
-  http_method             = aws_api_gateway_method.auth_method.http_method
+  resource_id             = aws_api_gateway_resource.query_resource.id
+  http_method             = aws_api_gateway_method.query_method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:644237782704:function:point_query/invocations"
