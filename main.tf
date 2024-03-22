@@ -139,7 +139,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   }
 
   request_templates = {
-    "application/json" = "Action=SendMessage&MessageGroupId=1&MessageBody={  \"a\": \"$util.base64Encode($context.authorizer.claims)\", \"authorization\": \"$util.base64Encode($input.params().header.get('Authorization'))\", \"body\": \"$util.base64Encode($input.body)\" }"
+    "application/json" = "Action=SendMessage&MessageBody={ \"authorization\": \"$util.base64Encode($input.params().header.get('Authorization'))\", \"body\": \"$util.base64Encode($input.body)\" }"
   }
 }
 
