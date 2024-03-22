@@ -111,6 +111,20 @@ resource "aws_api_gateway_method" "report_generate_post_method" {
   authorizer_id         = aws_api_gateway_authorizer.cognito_authorizer.id
 }
 
+resource "aws_api_gateway_model" "report_generate_post_method_response_model" {
+  rest_api_id           = aws_api_gateway_rest_api.point_api_gateway.id
+  name                  = "ReportGeneratePostMethodResponseModel"
+  content_type          = "application/json"
+
+  schema = jsonencode({
+    "type"       = "object",
+    "properties" = {
+      "status" = { "type" = "string", "const" = "received" }
+    },
+    "required"   = ["status"]
+  })
+}
+
 resource "aws_api_gateway_method_response" "report_generate_post_method_response" {
   rest_api_id = aws_api_gateway_rest_api.point_api_gateway.id
   resource_id = aws_api_gateway_resource.report_generate_resource.id
@@ -118,7 +132,7 @@ resource "aws_api_gateway_method_response" "report_generate_post_method_response
   status_code = "201"
 
   response_models = {
-    "application/json" = "Empty"
+    "application/json" = aws_api_gateway_model.report_generate_post_method_response_model.name
   }
 }
 
