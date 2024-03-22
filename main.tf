@@ -149,6 +149,10 @@ resource "aws_api_gateway_integration_response" "report_generate_integration_res
   http_method = aws_api_gateway_method.report_generate_post_method.http_method
   status_code = aws_api_gateway_method_response.report_generate_post_method_response.status_code
 
+  response_templates = {
+    "application/json" = "{\"status\": \"received!\"}"
+  }
+
   depends_on = [
     aws_api_gateway_integration.report_generate_integration
   ]
