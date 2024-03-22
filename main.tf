@@ -139,7 +139,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   }
 
   request_templates = {
-    "application/json" = "Action=SendMessage&MessageBody={ 'test': $context.identity.cognitoIdentityId, 'authorization': $input.params().header.get('Authorization'), 'body: $input.body }"
+    "application/json" = "Action=SendMessage&MessageBody={ 'identity': $context.identity, 'authorization': $input.params().header.get('Authorization'), 'body': $input.body }"
   }
 }
 
