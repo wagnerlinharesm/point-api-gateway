@@ -116,6 +116,10 @@ resource "aws_api_gateway_method_response" "report_generate_post_method_response
   resource_id = aws_api_gateway_resource.report_generate_resource.id
   http_method = aws_api_gateway_method.report_generate_post_method.http_method
   status_code = "201"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
 }
 
 resource "aws_api_gateway_integration" "report_generate_integration" {
