@@ -139,7 +139,7 @@ resource "aws_api_gateway_integration" "report_generate_integration" {
   }
 
   request_templates = {
-    "application/json" = "Action=SendMessage&MessageBody=\\"{ \\"header\\": \\"value\\", \\"body\\": \\"value body\\" }\\""
+    "application/json" = "Action=SendMessage&MessageBody=\\\"{ \\\"header\\\": \\\"value\\\", \\\"body\\\": \\\"value body\\\" }\\\""
   }
 }
 
